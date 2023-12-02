@@ -447,8 +447,8 @@ func getTrackStreamUrl(trackId string, sampleEnd int) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	streamUrl := strings.Replace(obj.StreamURL, ".128k.", ".128k.", 1)
-	return streamUrl, nil
+	// streamUrl := strings.Replace(obj.StreamURL, ".128k.", ".128k.", 1)
+	return obj.StreamURL, nil
 }
 
 func getBaseUrl(manifestUrl string) (string, error) {
@@ -624,7 +624,7 @@ func concatSegments(trackPath, trackPathMp3, tempPath string, segPaths []string)
 	var (
 		errBuffer bytes.Buffer
 	)
-	cmd := exec.Command("/usr/local/bin/ffmpeg", "-f", "concat", "-safe", "0", "-i", txtPath, "-acodec:a", "libmp3lame", "-b:a", "320k", trackPathMp3)
+	cmd := exec.Command("ffmpeg", "-f", "concat", "-safe", "0", "-i", txtPath, "-c copy", trackPath)
 	cmd.Stderr = &errBuffer
 	err = cmd.Run()
 	if err != nil {
